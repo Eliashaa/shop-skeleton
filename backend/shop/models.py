@@ -22,4 +22,11 @@ class Product(models.Model):
 # TODO: An order, and the items on it. Give them real fields, then run
 # `makemigrations shop && migrate`.
 
+class Order(models.Model):
+    id = models.AutoField(primary_key=True)
+    total_price_ore = models.PositiveIntegerField()
+    products = models.JSONField(default = list)
+    
+
+
 
