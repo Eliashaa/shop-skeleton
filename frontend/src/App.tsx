@@ -6,6 +6,7 @@ import type { Product } from './types'
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>([])
+  const [cart, setCart] = useState<[Product, number][]>([])
 
   useEffect(() => {
     fetchProducts().then(setProducts)
@@ -15,8 +16,8 @@ export default function App() {
 
   return (
     <main className="layout">
-      <ProductList products={products} />
-      <Cart products={products} />
+      <ProductList products={products} setCart={setCart} cart={cart}/>
+      <Cart cart={cart} setCart={setCart}/>
     </main>
   )
 }

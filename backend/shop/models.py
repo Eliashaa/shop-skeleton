@@ -21,3 +21,5 @@ class Product(models.Model):
 
 # TODO: An order, and the items on it. Give them real fields, then run
 # `makemigrations shop && migrate`.
+
+

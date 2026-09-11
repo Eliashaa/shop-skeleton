@@ -78,23 +78,70 @@ img {
   font-weight: 700;
 }
 
+.add-to-cart {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 12px 0 0 auto;
+  border: 0;
+  border-radius: 10px;
+  color: var(--color-purple-darkest);
+  background: #f6c945;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.add-to-cart:hover {
+  background: #ffd866;
+}
+
+.add-to-cart:focus-visible {
+  outline: 3px solid var(--color-white);
+  outline-offset: 2px;
+}
+
 .cart {
   position: sticky;
   top: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  align-content: start;
+  gap: 16px;
   height: 100vh;
   padding: 24px;
-  background: var(--color-purple-darker);
+  margin: 0;
+  list-style: none;
+}
+
+.cart > .cart-container {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.cart-container > .cart {
+  position: static;
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  overflow-y: auto;
 }
 
 .cart-empty {
-  margin: auto 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 24px;
+  background: var(--color-purple-darker);
   text-align: center;
 }
 
 .cart-empty-heading {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-size: 18px;
 }
 
@@ -102,3 +149,163 @@ img {
   margin: 0;
   color: var(--color-beige);
 }
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 24px 24px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-purple-dark);
+  color: var(--color-white);
+  font-size: 14px;
+}
+
+.cart-header-button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  color: var(--color-white);
+  background: transparent;
+}
+
+.cart-header-button:hover {
+  color: #f6c945;
+}
+
+.cart-header-button:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+.cart-image {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.cart-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cart-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--color-purple-dark);
+}
+
+.cart-details {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 18px;
+}
+
+.cart-title,
+.cart-subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cart-title {
+  font-size: 14px;
+}
+
+.cart-subtitle {
+  color: var(--color-beige);
+  font-size: 13px;
+}
+
+.quantity-controls {
+  display: flex;
+  width: fit-content;
+  height: 32px;
+  margin-top: 8px;
+  border: 1px solid var(--color-beige);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.quantity-controls button,
+.quantity-controls span {
+  display: grid;
+  min-width: 29px;
+  place-items: center;
+  border: 0;
+  color: var(--color-white);
+  background: transparent;
+}
+
+.quantity-controls button {
+  font-size: 20px;
+}
+
+.quantity-controls span {
+  border-right: 1px solid var(--color-beige);
+  border-left: 1px solid var(--color-beige);
+  font-size: 14px;
+}
+
+.cart-price {
+  align-self: center;
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.remove-item {
+  position: absolute;
+  top: -5px;
+  right: 0;
+  border: 0;
+  color: var(--color-white);
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.cart-footer {
+  padding: 12px 0 0;
+  border-top: 1px solid var(--color-purple-dark);
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.checkout-button {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  color: #1d1429;
+  background: var(--color-orange);
+  font-size: 16px;
+}
+
+.checkout-button:hover {
+  background: var(--color-orange-dark);
+}
+
+.cart {
+  background: var(--color-purple-darker);
+}
+
