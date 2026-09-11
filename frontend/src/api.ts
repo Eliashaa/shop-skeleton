@@ -16,3 +16,13 @@ export async function placeOrder(lines: OrderLine[]): Promise<{ order_id: number
   if (!res.ok) throw new Error(`POST /api/orders failed: ${res.status}`)
   return res.json()
 }
+
+export async function createOrder(total_price_ore: number, products: Product[]): Promise<{ order_id: number }> {
+  const res = await fetch('/api/orders/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ total_price_ore, products }),
+  })
+  if (!res.ok) throw new Error(`POST /api/orders/create failed: ${res.status}`)
+  return res.json()
+}
