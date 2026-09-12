@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import Product, Order
 
@@ -12,6 +13,7 @@ def products(request):
 def getOrderIDs(request) -> list:
     return list(Order.objects.values_list("id", flat=True))
 
+@csrf_exempt
 def createOrder(request):
     if request.method != "POST":
         return JsonResponse({"error": "Only POST requests are allowed."}, status=405)

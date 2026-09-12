@@ -17,7 +17,7 @@ export async function placeOrder(lines: OrderLine[]): Promise<{ order_id: number
   return res.json()
 }
 
-export async function createOrder(total_price_ore: number, products: Product[]): Promise<{ order_id: number }> {
+export async function createOrder(total_price_ore: number, products: OrderLine[]): Promise<{ order_id: number }> {
   const res = await fetch('/api/orders/create', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

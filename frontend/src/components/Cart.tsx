@@ -2,14 +2,27 @@ import type React from 'react'
 import { formatOre } from '../format'
 import type { Product } from '../types'
 import DeleteIcon from '@mui/icons-material/Delete';
+import { createOrder } from '../api'
 
 type Props = {
   cart: [Product, number][]
   setCart: React.Dispatch<React.SetStateAction<[Product, number][]>>
 }
 
-
-
+async function handleCheckout(
+  cart: [Product, number][],
+  setCart: React.Dispatch<React.SetStateAction<[Product, number][]>>,
+) {
+  const total_price:number = cart.reduce((total, [product, quantity]) => total + product.price_ore * quantity, 0)
+  const products = cart.map(([product, quantity]) => ({ product_id: product.id, quantity }))
+  try {
+    const response = await createOrder(total_price, products)
+    console.log('Order created with ID:', response.order_id)
+    setCart([])
+  } catch (error) {
+    console.error('Error creating order:', error)
+  }
+}
 function formatText(product: Product) {
   return product.subtitle.split("·")[1].split(" ")[2] + ", " + product.subtitle.split("·")[0]
 }
@@ -65,7 +78,9 @@ export default function Cart({ cart, setCart }: Props) {
         <strong>Delsum</strong>
         <strong>{formatOre(cart.reduce((total, [product, quantity]) => total + totalPrice(product, quantity), 0))}</strong>
       </div>
-      <button className="checkout-button" type="button">Fullfør kjøp</button>
+      <button className="checkout-button" type="button" onClick={() => handleCheckout(cart, setCart)}>
+        Fullfør kjøp
+      </button>
     </div>
     </div>
    
