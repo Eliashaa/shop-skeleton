@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type React from 'react'
 import { formatOre } from '../format'
 import type { Product } from '../types'
@@ -28,6 +29,15 @@ function formatText(product: Product) {
 }
 
 export default function Cart({ cart, setCart }: Props) {
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  useEffect(() => {
+    if (!showSuccess) return
+
+    const timer = window.setTimeout(() => setShowSuccess(false), 2500)
+    return () => window.clearTimeout(timer)
+  }, [showSuccess])
+
   function changeQuantity(productId: string, change: number) {
     setCart((currentCart) => currentCart.flatMap(([product, quantity]) => {
       if (product.id !== productId) return [[product, quantity]]
@@ -39,51 +49,74 @@ export default function Cart({ cart, setCart }: Props) {
 
   const totalPrice = (product: Product, quantity: number) => product.price_ore * quantity
 
-  return cart.length === 0 ? (
-    <div className="cart-empty">
-      <h2 className="cart-empty-heading">Handlekurven er tom</h2>
-      <p className="cart-empty-body">Legg til varer for å fortsette.</p>
-    </div>
-  ) : (
-    <div className="cart">
-    <div className="cart-container">
-    <div className="cart-header">
-      <span>Tøm handlekurv</span>
-      <button className="cart-header-button" type="button" aria-label="Tøm handlekurv" onClick={() => setCart([])}>
-        <DeleteIcon fontSize="small" aria-hidden="true" />
-      </button>
-    </div>
-    <ul className="cart">
-      {cart.map(([product, quantity]) => (
-        <li className="cart-item" key={product.id}>
-            <div className="cart-image">
-              <img src={product.image} alt={product.title} loading="lazy" />
+  return (
+    <>
+      {cart.length === 0 ? (
+        <div className="cart-empty">
+          <h2 className="cart-empty-heading">Handlekurven er tom</h2>
+          <p className="cart-empty-body">Legg til varer for å fortsette.</p>
+        </div>
+      ) : (
+        <div className="cart-panel">
+          <div className="cart-container">
+            <div className="cart-header">
+              <span>Tøm handlekurv</span>
+              <button className="cart-header-button" type="button" aria-label="Tøm handlekurv" onClick={() => setCart([])}>
+                <DeleteIcon fontSize="small" aria-hidden="true" />
+              </button>
             </div>
-          <div className="cart-details">
-            <strong className="cart-title">{product.title}</strong>
-            <span className="cart-subtitle">{formatText(product)}</span>
-            <div className="quantity-controls" aria-label={`Antall ${product.title}`}>
-              <button type="button" aria-label="Reduser antall" onClick={() => changeQuantity(product.id, -1)}>-</button>
-              <span>{quantity}</span>
-              <button type="button" aria-label="Øk antall" onClick={() => changeQuantity(product.id, 1)}>+</button>
+            <ul className="cart-items">
+              {cart.map(([product, quantity]) => (
+                <li className="cart-item" key={product.id}>
+                    <div className="cart-image">
+                      <img src={product.image} alt={product.title} loading="lazy" />
+                    </div>
+                  <div className="cart-details">
+                    <strong className="cart-title">{product.title}</strong>
+                    <span className="cart-subtitle">{formatText(product)}</span>
+                    <div className="quantity-controls" aria-label={`Antall ${product.title}`}>
+                      <button type="button" aria-label="Reduser antall" onClick={() => changeQuantity(product.id, -1)}>-</button>
+                      <span>{quantity}</span>
+                      <button type="button" aria-label="Øk antall" onClick={() => changeQuantity(product.id, 1)}>+</button>
+                    </div>
+                  </div>
+                  <strong className="cart-price">{formatOre(product.price_ore * quantity)}</strong>
+                  <button className="remove-item" type="button" aria-label={`Fjern ${product.title}`} onClick={() => changeQuantity(product.id, -quantity)}>×</button>
+                </li>
+              ))}
+            </ul>
+            <div className="cart-footer">
+              <div className="cart-total">
+                <strong>Delsum</strong>
+                <strong>{formatOre(cart.reduce((total, [product, quantity]) => total + totalPrice(product, quantity), 0))}</strong>
+              </div>
+              <button className="checkout-button" type="button" onClick={async () => {
+                try {
+                  await handleCheckout(cart, setCart)
+                  setShowSuccess(true)
+                } catch (error) {
+                  console.error('Error creating order:', error)
+                }
+              }}>
+                Fullfør kjøp
+              </button>
             </div>
           </div>
-          <strong className="cart-price">{formatOre(product.price_ore * quantity)}</strong>
-          <button className="remove-item" type="button" aria-label={`Fjern ${product.title}`} onClick={() => changeQuantity(product.id, -quantity)}>×</button>
-        </li>
-      ))}
-    </ul>
-     <div className="cart-footer">
-      <div className="cart-total">
-        <strong>Delsum</strong>
-        <strong>{formatOre(cart.reduce((total, [product, quantity]) => total + totalPrice(product, quantity), 0))}</strong>
-      </div>
-      <button className="checkout-button" type="button" onClick={() => handleCheckout(cart, setCart)}>
-        Fullfør kjøp
-      </button>
-    </div>
-    </div>
-   
-    </div>
+        </div>
+      )}
+
+      {showSuccess && (
+        <div className="checkout-success-overlay" role="dialog" aria-modal="true" aria-labelledby="checkout-success-title">
+          <div className="checkout-success-modal">
+            <div className="checkout-success-icon" aria-hidden="true">✓</div>
+            <h3 id="checkout-success-title">Kjøp vellykket</h3>
+            <p>Din bestilling er registrert.</p>
+            <button type="button" className="checkout-success-button" onClick={() => setShowSuccess(false)}>
+              Lukk
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
