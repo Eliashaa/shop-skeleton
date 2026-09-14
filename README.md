@@ -1,4 +1,4 @@
-# Mini Oda Shop — skeleton
+# Mini Oda Shop
 
 Django + SQLite backend, React + TypeScript (Vite) frontend. Browse products, add
 them to a cart, place an order.
@@ -76,3 +76,127 @@ and an active cart. Use them for inspiration.
 Replace this README with your own: how to run the app, what you cut or simplified to
 fit the two hours, what you would do next with more time, and where AI tools helped
 or got in the way.
+
+---
+
+# English summary
+
+A small full-stack e-commerce project with a Django backend and a React + Vite frontend. The project includes a product list, shopping cart, quantity updates, checkout flow, and a success modal after a completed purchase.
+
+## Changes made
+
+- Product list with cards and a yellow square "add to cart" button with a + icon
+- Shopping cart with item overview, quantity controls, and remove buttons
+- Empty cart state with text and styling
+- Cart footer with totals and a fixed "Complete purchase" button at the bottom
+- Django API for fetching products and creating orders
+- Order model with `total_price_ore` and `products` stored as JSON
+- CSRF exemption for the order endpoint during local development
+- Success popup after a completed purchase
+- Styling adapted to the Oda design, including the two-column layout
+
+## Technologies
+
+- Backend: Django + SQLite
+- Frontend: React + TypeScript + Vite
+- UI helpers: MUI icons
+
+## Requirements to run the project
+
+You need:
+
+- Python 3.10+ or newer
+- Node.js 18+ and npm
+
+Check with:
+
+```bash
+python3 --version
+node --version
+npm --version
+```
+
+## Run the project locally
+
+### 1) Backend
+
+From the project root:
+
+```bash
+cd backend
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py seed_products
+python manage.py runserver
+```
+
+This starts the Django server at http://localhost:8000.
+
+### 2) Frontend
+
+In a new terminal:
+
+```bash
+cd frontend
+npm install
+npm install @mui/icons-material @mui/material @emotion/react @emotion/styled
+npm run dev
+```
+
+This starts Vite at http://localhost:5173.
+
+## If something does not work
+
+If dependencies are already installed but the app will not start:
+
+```bash
+cd backend
+. .venv/bin/activate
+python manage.py migrate
+python manage.py seed_products
+python manage.py runserver
+```
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+If you edit `products.json`, run this command again to update the database:
+
+```bash
+cd backend
+. .venv/bin/activate
+python manage.py seed_products
+```
+
+## Structure
+
+```text
+shop-skeleton/
+  backend/
+    config/
+    shop/
+    manage.py
+    requirements.txt
+    products.json
+  frontend/
+    src/
+    package.json
+    vite.config.ts
+  designs/
+  README.md
+```
+
+## Short project status
+
+The project is now in a working demo state with:
+
+- product listing
+- shopping cart
+- order creation through the Django API
+- success popup after purchase
+- responsive visual styling
